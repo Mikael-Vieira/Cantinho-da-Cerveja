@@ -1,0 +1,148 @@
+/* ==========================================================================
+   GLOBAL - CANTINHO DA CERVEJA
+   Design Responsivo, Aconchegante e Adaptável (Light/Dark Mode)
+   ========================================================================== */
+
+/* 1. TEMA CLARO ACONCHEGANTE (Padrão) */
+:root {
+    --bg-main: #F8F5F0;       /* Creme suave e acolhedor */
+    --bg-card: #FFFFFF;       /* Cards brancos em destaque */
+    --bg-nav: #1E1B18;        /* Topo escuro elegante para a logo brilhar */
+    --primary: #C29247;       /* Dourado legível no fundo claro */
+    --primary-hover: #A87B35;
+    --text-main: #2A2622;     /* Texto escuro/amadeirado */
+    --text-muted: #706860;    /* Texto secundário */
+    --accent-green: #2E7D32;  /* Verde de preço */
+    --border-subtle: #E8E2D5;
+    --radius: 12px;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* 2. TEMA ESCURO ACONCHEGANTE (Ativa automaticamente no celular em Modo Escuro) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-main: #1E1B18;       /* Carvão/Café escuro */
+        --bg-card: #2A2622;       /* Amadeirado escuro */
+        --bg-nav: #161412;        /* Topo mais escuro */
+        --primary: #D4A359;       /* Dourado vibrante da logo */
+        --primary-hover: #C29247;
+        --text-main: #F4EFEA;     /* Creme para leitura */
+        --text-muted: #B0A8A0;    /* Cinza/creme suave */
+        --accent-green: #4CAF50;  /* Verde vibrante de preço */
+        --border-subtle: #3D3731;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Reset Global & Acessibilidade Touch */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header & Navegação Flexível */
+nav {
+    background-color: var(--bg-nav);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.85rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav a {
+    color: #F4EFEA;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+nav a:hover, nav a:active {
+    color: var(--primary);
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+    list-style: none;
+    align-items: center;
+    width: 100%;
+}
+
+/* Título de Seção */
+header {
+    background-color: var(--bg-card);
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+    text-align: center;
+}
+
+header h1 {
+    color: var(--primary);
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+/* Main Container Responsivo */
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 1.25rem auto;
+    padding: 0 0.85rem;
+}
+
+/* Rodapé */
+footer {
+    background-color: var(--bg-nav);
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+    padding: 1.25rem 1rem;
+    color: #B0A8A0;
+    font-size: 0.8rem;
+}
+
+/* Breakpoint para Telas Médias e Desktops (≥ 640px) */
+@media (min-width: 640px) {
+    nav {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem 2rem;
+    }
+
+    nav ul {
+        width: auto;
+        gap: 1.5rem;
+    }
+
+    header {
+        padding: 1.5rem 2rem;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    main {
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
+}

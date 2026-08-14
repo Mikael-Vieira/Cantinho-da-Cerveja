@@ -2,12 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
-// 1. PÁGINAS PÚBLICAS E ÁREA DO CLIENTE
-// Qualquer pessoa pode acessar a Home, o Carrinho e Fazer Pedidos
-Route::get('/', function () {
-    return view('welcome');
-});
+// Rota do Cardápio de Produtos (Página Inicial)
+Route::get('/', [ProductController::class, 'index'])->name('products.index');
+
 
 Route::get('/carrinho', function () {
     return '<h1>Carrinho de Compras</h1>';
@@ -18,10 +17,17 @@ Route::get('/checkout', function () {
 })->name('checkout.index');
 
 
-// 2. ÁREA AUTENTICADA GERAL (Para qualquer usuário logado)
+// 2. ROTA PADRÃO DO BREEZE (Exige Login para Acessar)
+// Se não estiver logado, redireciona automaticamente para a tela de login
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+
+// 3. ÁREA AUTENTICADA GERAL (Para qualquer usuário logado)
 Route::middleware('auth')->group(function () {
 
-    // Perfil do usuário (já gerado pelo Breeze)
+    // Perfil do usuário (gerado pelo Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -33,7 +39,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-// 3. ÁREA INTERNA DA EMPRESA (Funcionários e Chefe)
+// 4. ÁREA INTERNA DA EMPRESA (Funcionários e Chefe)
 // Exclusivo para quem gerencia a operação (ver pedidos da loja, preparar entrega, etc.)
 Route::middleware(['auth', 'role:funcionario,chefe'])->prefix('gerencial')->group(function () {
 
@@ -44,7 +50,7 @@ Route::middleware(['auth', 'role:funcionario,chefe'])->prefix('gerencial')->grou
 });
 
 
-// 4. ÁREA ESTRATÉGICA (Exclusivo do Chefe)
+// 5. ÁREA ESTRATÉGICA (Exclusivo do Chefe)
 // Apenas o Chefe tem acesso às métricas financeiras e relatórios
 Route::middleware(['auth', 'role:chefe'])->prefix('admin')->group(function () {
 
