@@ -1,8 +1,7 @@
 <nav>
     <div>
-        {{-- Logo / Nome da Loja --}}
         <a href="{{ route('products.index') }}">
-            <strong>Sistema de Pedidos</strong>
+            <strong>Cantinho da Cerveja</strong>
         </a>
     </div>
 
@@ -11,34 +10,20 @@
             <a href="{{ route('products.index') }}">Cardápio</a>
         </li>
         <li>
-            <a href="{{ route('carrinho.index') }}">Carrinho</a>
+            {{-- Link simples que aponta diretamente para a rota do carrinho --}}
+            <a href="{{ route('carrinho.index') }}">🛒 Carrinho</a>
         </li>
 
         @auth
-            {{-- Links para Usuario Logado --}}
-            <li>
-                <a href="{{ route('cliente.pedidos') }}">Meus Pedidos</a>
-            </li>
-            <li>
-                <span>Olá, {{ Auth::user()->name }}</span>
-            </li>
-            <li>
-                <a href="{{ route('profile.edit') }}">Perfil</a>
-            </li>
+            <li><a href="{{ route('profile.edit') }}">Perfil</a></li>
             <li>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit">Sair</button>
+                    <button type="submit" style="background:none; border:none; color:inherit; cursor:pointer;">Sair</button>
                 </form>
             </li>
         @else
-            {{-- Links para Visitante --}}
-            <li>
-                <a href="{{ route('login') }}">Entrar</a>
-            </li>
-            <li>
-                <a href="{{ route('register') }}">Cadastrar</a>
-            </li>
+            <li><a href="{{ route('login') }}">Entrar</a></li>
         @endauth
     </ul>
 </nav>

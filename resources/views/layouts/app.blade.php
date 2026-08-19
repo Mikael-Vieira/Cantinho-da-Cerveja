@@ -31,5 +31,6 @@
         <p>&copy; {{ date('Y') }} Cantinho da Cerveja - Todos os direitos reservados.</p>
     </footer>
 
+    @stack('scripts')
 </body>
 </html>

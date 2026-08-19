@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
 
 // Rota do Cardápio de Produtos (Página Inicial)
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
@@ -59,5 +60,11 @@ Route::middleware(['auth', 'role:chefe'])->prefix('admin')->group(function () {
     })->name('chefe.dashboard');
 
 });
+
+// Rotas do Carrinho
+Route::get('/carrinho', [CartController::class, 'index'])->name('carrinho.index');
+Route::post('/carrinho/adicionar/{product}', [CartController::class, 'add'])->name('carrinho.add');
+Route::post('/carrinho/remover/{product}', [CartController::class, 'remove'])->name('carrinho.remove');
+Route::post('/carrinho/limpar', [CartController::class, 'clear'])->name('carrinho.clear');
 
 require __DIR__.'/auth.php';
