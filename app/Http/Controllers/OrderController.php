@@ -59,22 +59,17 @@ class OrderController extends Controller
 
         session()->forget('cart');
 
-        return redirect()->route('order.status', $order->id)->with('success', 'Pedido enviado com sucesso!');
+        // Redireciona para o cardápio acionando o Modal/Popup de Sucesso
+        return redirect()->route('products.index')
+            ->with('order_success', "Pedido #{$order->id} realizado com sucesso! Aguarde o preparo.");
     }
 
-    // Status do Pedido para o Cliente
-    public function status(Order $order)
-    {
-        return view('orders.status', compact('order'));
-    }
-
-    // Painel dos Funcionários
+    // Painel dos Funcionários (Exibe apenas pedidos ativos: pendente, em_preparo e pronto)
     public function index()
     {
-        // Busca apenas os pedidos ativos da cozinha (oculta os 'entregue')
         $orders = Order::with('items')
             ->whereIn('status', ['pendente', 'em_preparo', 'pronto'])
-            ->orderBy('created_at', 'asc') // Exibe os mais antigos primeiro para fila de preparo
+            ->orderBy('created_at', 'asc') // Exibe os mais antigos primeiro para a fila
             ->get();
 
         return view('orders.index', compact('orders'));

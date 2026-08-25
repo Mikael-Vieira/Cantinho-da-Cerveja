@@ -6,77 +6,31 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 
-// Rota do Cardápio de Produtos (Página Inicial)
+// 1. ROTA PRINCIPAL / CARDÁPIO
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
 
-
-Route::get('/carrinho', function () {
-    return '<h1>Carrinho de Compras</h1>';
-})->name('carrinho.index');
-
-Route::get('/checkout', function () {
-    return '<h1>Finalizar Pedido</h1><p>Formulário com nome, telefone e endereço de entrega.</p>';
-})->name('checkout.index');
-
-
-// 2. ROTA PADRÃO DO BREEZE (Exige Login para Acessar)
-// Se não estiver logado, redireciona automaticamente para a tela de login
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-// 3. ÁREA AUTENTICADA GERAL (Para qualquer usuário logado)
-Route::middleware('auth')->group(function () {
-
-    // Perfil do usuário (gerado pelo Breeze)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Tela de histórico de pedidos do próprio cliente
-    Route::get('/meus-pedidos', function () {
-        return '<h1>Meus Pedidos</h1><p>Acompanhamento do status dos seus pedidos.</p>';
-    })->name('cliente.pedidos');
-});
-
-
-// 4. ÁREA INTERNA DA EMPRESA (Funcionários e Chefe)
-// Exclusivo para quem gerencia a operação (ver pedidos da loja, preparar entrega, etc.)
-Route::middleware(['auth', 'role:funcionario,chefe'])->prefix('gerencial')->group(function () {
-
-    Route::get('/pedidos', function () {
-        return '<h1>Painel Operacional de Pedidos</h1><p>Lista de todos os pedidos recebidos, cliente, itens e endereço de entrega.</p>';
-    })->name('gerencial.pedidos');
-
-});
-
-
-// 5. ÁREA ESTRATÉGICA (Exclusivo do Chefe)
-// Apenas o Chefe tem acesso às métricas financeiras e relatórios
-Route::middleware(['auth', 'role:chefe'])->prefix('admin')->group(function () {
-
-    Route::get('/dashboard', function () {
-        return '<h1>Dashboard Financeira do Chefe</h1><p>Métricas de vendas, lucros e total de pedidos.</p>';
-    })->name('chefe.dashboard');
-
-});
-
-// Rotas do Carrinho
+// 2. ROTAS DO CARRINHO DE COMPRAS
 Route::get('/carrinho', [CartController::class, 'index'])->name('carrinho.index');
 Route::post('/carrinho/adicionar/{product}', [CartController::class, 'add'])->name('carrinho.add');
 Route::post('/carrinho/remover/{product}', [CartController::class, 'remove'])->name('carrinho.remove');
 Route::post('/carrinho/limpar', [CartController::class, 'clear'])->name('carrinho.clear');
 
-// Rotas do Cliente
+// 3. ROTAS DE CHECKOUT E CRIAÇÃO DE PEDIDO (PÚBLICAS)
 Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
 Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
-Route::get('/pedido/{order}/status', [OrderController::class, 'status'])->name('order.status');
 
-// Rotas dos Funcionários (Exige Login)
+// 4. PAINEL DOS FUNCIONÁRIOS DA COZINHA (EXIGE LOGIN)
 Route::middleware(['auth'])->group(function () {
     Route::get('/pedidos-cozinha', [OrderController::class, 'index'])->name('orders.index');
     Route::patch('/pedidos-cozinha/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
 
+// 5. ÁREA ESTRATÉGICA (EXCLUSIVO DO CHEFE)
+Route::middleware(['auth', 'role:chefe'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return '<h1>Dashboard Financeira do Chefe</h1><p>Métricas de vendas, lucros e total de pedidos.</p>';
+    })->name('chefe.dashboard');
+});
+
+// ROTAS DE AUTENTICAÇÃO DO BREEZE (Login, Logout, etc.)
 require __DIR__.'/auth.php';
