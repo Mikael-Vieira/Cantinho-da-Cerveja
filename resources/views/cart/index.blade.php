@@ -50,7 +50,7 @@
                     <span class="cart-summary-total">R$ {{ number_format($total, 2, ',', '.') }}</span>
                 </div>
 
-                <a href="#" class="btn-checkout">Finalizar Pedido</a>
+                <a href="{{ route('checkout.index') }}" class="btn-checkout">Finalizar Pedido</a>
 
                 <form action="{{ route('carrinho.clear') }}" method="POST">
                     @csrf

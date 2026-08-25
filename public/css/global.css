@@ -87,6 +87,65 @@ nav ul {
     width: 100%;
 }
 
+/* Brand / Logo */
+nav .nav-brand strong {
+    font-size: 1.15rem;
+    color: var(--primary);
+    letter-spacing: 0.5px;
+}
+
+/* Usuário Logado */
+nav ul .nav-user-info span {
+    color: #F4EFEA;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+}
+
+/* Botão de Logout */
+.nav-logout-form {
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-logout {
+    background-color: #ef4444;
+    color: #ffffff;
+    border: none;
+    padding: 0.35rem 0.85rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-logout:hover {
+    background-color: #dc2626;
+}
+
+.btn-logout:active {
+    transform: scale(0.96);
+}
+
+/* Botão de Entrar (Para Visitantes) */
+nav a.btn-login {
+    background-color: var(--primary);
+    color: #1E1B18 !important;
+    padding: 0.35rem 0.85rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+}
+
+nav a.btn-login:hover {
+    background-color: var(--primary-hover);
+}
+
 /* Título de Seção */
 header {
     background-color: var(--bg-card);
@@ -120,8 +179,7 @@ footer {
     font-size: 0.8rem;
 }
 
-/*POPUP FLUTUANTE*/
-
+/* POPUP FLUTUANTE */
 .toast-popup {
     position: fixed;
     top: 20px;

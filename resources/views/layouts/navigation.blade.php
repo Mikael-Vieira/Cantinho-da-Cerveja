@@ -1,29 +1,42 @@
 <nav>
     <div>
-        <a href="{{ route('products.index') }}">
+        <a href="{{ route('products.index') }}" class="nav-brand">
             <strong>Cantinho da Cerveja</strong>
         </a>
     </div>
 
     <ul>
+        {{-- Páginas Públicas (Sempre visíveis) --}}
         <li>
             <a href="{{ route('products.index') }}">Cardápio</a>
         </li>
         <li>
-            {{-- Link simples que aponta diretamente para a rota do carrinho --}}
             <a href="{{ route('carrinho.index') }}">🛒 Carrinho</a>
         </li>
 
         @auth
-            <li><a href="{{ route('profile.edit') }}">Perfil</a></li>
+            {{-- Páginas Exclusivas para Funcionários e Chefe --}}
             <li>
-                <form method="POST" action="{{ route('logout') }}">
+                <a href="{{ route('orders.index') }}">Pedidos Cozinha</a>
+            </li>
+
+            {{-- Identificação do Usuário Logado --}}
+            <li class="nav-user-info">
+                <span> {{ Auth::user()->name }}</span>
+            </li>
+
+            {{-- Botão Desconectar --}}
+            <li>
+                <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
                     @csrf
-                    <button type="submit" style="background:none; border:none; color:inherit; cursor:pointer;">Sair</button>
+                    <button type="submit" class="btn-logout">Sair</button>
                 </form>
             </li>
         @else
-            <li><a href="{{ route('login') }}">Entrar</a></li>
+            {{-- Apenas para Clientes (Deslogados) --}}
+            <li>
+                <a href="{{ route('login') }}" class="btn-login">Entrar</a>
+            </li>
         @endauth
     </ul>
 </nav>

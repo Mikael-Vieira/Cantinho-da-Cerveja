@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 // Rota do Cardápio de Produtos (Página Inicial)
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
@@ -66,5 +67,16 @@ Route::get('/carrinho', [CartController::class, 'index'])->name('carrinho.index'
 Route::post('/carrinho/adicionar/{product}', [CartController::class, 'add'])->name('carrinho.add');
 Route::post('/carrinho/remover/{product}', [CartController::class, 'remove'])->name('carrinho.remove');
 Route::post('/carrinho/limpar', [CartController::class, 'clear'])->name('carrinho.clear');
+
+// Rotas do Cliente
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
+Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
+Route::get('/pedido/{order}/status', [OrderController::class, 'status'])->name('order.status');
+
+// Rotas dos Funcionários (Exige Login)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pedidos-cozinha', [OrderController::class, 'index'])->name('orders.index');
+    Route::patch('/pedidos-cozinha/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+});
 
 require __DIR__.'/auth.php';
