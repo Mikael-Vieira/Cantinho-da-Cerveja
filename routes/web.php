@@ -9,6 +9,11 @@ use App\Http\Controllers\OrderController;
 // 1. ROTA PRINCIPAL / CARDÁPIO
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
 
+// ROTA DE REDIRECIONAMENTO DE LOGIN (Resolve o erro do Breeze)
+Route::get('/dashboard', function () {
+    return redirect()->route('orders.index');
+})->middleware(['auth'])->name('dashboard');
+
 // 2. ROTAS DO CARRINHO DE COMPRAS
 Route::get('/carrinho', [CartController::class, 'index'])->name('carrinho.index');
 Route::post('/carrinho/adicionar/{product}', [CartController::class, 'add'])->name('carrinho.add');
