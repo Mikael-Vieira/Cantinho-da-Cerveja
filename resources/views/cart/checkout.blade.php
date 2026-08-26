@@ -9,17 +9,28 @@
 
             <div>
                 <label for="customer_name" style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Nome Completo *</label>
-                <input type="text" name="customer_name" id="customer_name" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main);">
+                <input type="text" name="customer_name" id="customer_name" value="{{ old('customer_name', Auth::user()->name) }}" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main);">
             </div>
 
             <div>
-                <label for="customer_phone" style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Telefone / WhatsApp *</label>
-                <input type="tel" name="customer_phone" id="customer_phone" placeholder="(28) 99999-9999" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main);">
+                <label for="phone" style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Telefone / WhatsApp *</label>
+                <input type="tel" name="phone" id="phone" placeholder="(28) 99999-9999" value="{{ old('phone') }}" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main);">
             </div>
 
             <div>
-                <label for="customer_address" style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Endereço ou Nº da Mesa *</label>
-                <input type="text" name="customer_address" id="customer_address" placeholder="Ex: Rua Principal, 123 ou Mesa 05" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main);">
+                <label for="address" style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Endereço ou Nº da Mesa *</label>
+                <input type="text" name="address" id="address" placeholder="Ex: Rua Principal, 123 ou Mesa 05" value="{{ old('address') }}" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main);">
+            </div>
+
+            <div>
+                <label for="payment_method" style="display:block; margin-bottom: 0.5rem; font-weight: bold;">Forma de Pagamento *</label>
+                <select name="payment_method" id="payment_method" required style="width: 100%; padding: 0.75rem; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-card); color: var(--text-main);">
+                    <option value="" disabled selected>Selecione uma opção</option>
+                    <option value="Pix">PIX</option>
+                    <option value="Cartão de Crédito">Cartão de Crédito</option>
+                    <option value="Cartão de Débito">Cartão de Débito</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                </select>
             </div>
 
             <div>

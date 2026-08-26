@@ -6,18 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('role')->default('cliente'); // 👈 ADICIONADO AQUI
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // Dados fixos do usuário para entrega
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+
+            // Cargo (client, funcionario, admin)
+            $table->string('role')->default('client');
+
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,9 +36,16 @@ return new class extends Migration
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
+            $table->string('device')->nullable();
+            $table->text('payload');
             $table->integer('last_activity')->index();
         });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('users');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('sessions');
     }
 };

@@ -6,26 +6,34 @@
     </div>
 
     <ul>
-        {{-- Páginas Públicas (Sempre visíveis) --}}
+        {{-- Páginas Básicas (Sempre visíveis para todos logados ou deslogados) --}}
         <li>
             <a href="{{ route('products.index') }}">Cardápio</a>
         </li>
-        <li>
-            <a href="{{ route('carrinho.index') }}">🛒 Carrinho</a>
-        </li>
 
         @auth
-            {{-- Páginas Exclusivas para Funcionários e Chefe --}}
+            {{-- Carrinho visível para qualquer usuário logado (Cliente, Funcionário, Admin) --}}
             <li>
-                <a href="{{ route('orders.index') }}">Pedidos Cozinha</a>
+                <a href="{{ route('carrinho.index') }}">🛒 Carrinho</a>
             </li>
 
-            {{-- Identificação do Usuário Logado --}}
+            {{--
+              Painel da Cozinha:
+              Aparece apenas se o usuário for 'admin' ou 'funcionario'
+            --}}
+            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'funcionario')
+                <li>
+                    <a href="{{ route('orders.index') }}">Painel da Cozinha</a>
+                </li>
+            @endif
+
+            {{-- Informações e Ações do Usuário --}}
             <li class="nav-user-info">
-                <span> {{ Auth::user()->name }}</span>
+                <span>{{ Auth::user()->name }}</span>
             </li>
-
-            {{-- Botão Desconectar --}}
+            <li>
+                <a href="{{ route('profile.edit') }}">Perfil</a>
+            </li>
             <li>
                 <form method="POST" action="{{ route('logout') }}" class="nav-logout-form">
                     @csrf
@@ -33,9 +41,12 @@
                 </form>
             </li>
         @else
-            {{-- Apenas para Clientes (Deslogados) --}}
+            {{-- Ações para visitantes não logados --}}
             <li>
                 <a href="{{ route('login') }}" class="btn-login">Entrar</a>
+            </li>
+            <li>
+                <a href="{{ route('register') }}" class="btn-register">Criar Conta</a>
             </li>
         @endauth
     </ul>

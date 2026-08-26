@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // 👈 ADICIONAMOS O REGISTRO DO NOSSO MIDDLEWARE AQUI
+        //ADICIONAMOS O REGISTRO DO NOSSO MIDDLEWARE AQUI
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
         ]);

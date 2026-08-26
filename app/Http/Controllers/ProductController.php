@@ -2,37 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     /**
-     * Exibe o cardápio/mostruário público de produtos para os clientes.
+     * Exibe a lista de produtos no cardápio.
      */
     public function index()
     {
-        // Busca apenas as categorias ativas e carrega os produtos ativos associados a elas
-        $categories = Category::where('is_active', true)
-            ->with(['products' => function ($query) {
-                $query->where('is_active', true);
-            }])
-            ->get();
+        // Busca as categorias ativas e traz os produtos relacionados de cada uma
+        $categories = Category::with('products')->get();
 
         return view('products.index', compact('categories'));
     }
 
     /**
-     * Exibe os detalhes de um produto específico (caso clique em ver detalhes).
+     * Mostra o formulário para criar um novo produto (se houver painel administrativo).
      */
-    public function show(Product $product)
+    public function create()
     {
-        // Se o produto estiver inativo no banco, retorna erro 404 (Não Encontrado)
-        if (! $product->is_active) {
-            abort(404);
-        }
+        return view('products.create');
+    }
 
-        return view('products.show', compact('product'));
+    /**
+     * Salva um novo produto no banco de dados.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'price' => $request->price,
+        ]);
+
+        return redirect()->route('products.index')->with('success', 'Produto cadastrado com sucesso!');
     }
 }

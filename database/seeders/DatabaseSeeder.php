@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Funcionário',
                 'password' => Hash::make('123'),
+                'role' => 'funcionario', // <-- ADICIONADO AQUI
             ]
         );
 
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Chefe',
                 'password' => Hash::make('123'),
+                'role' => 'admin', // <-- ADICIONADO AQUI (ou 'chefe', dependendo da sua preferência)
             ]
         );
     }

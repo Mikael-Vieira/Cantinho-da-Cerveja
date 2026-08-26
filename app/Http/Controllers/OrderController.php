@@ -5,85 +5,88 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    // Exibe o formulário de Checkout
+    // Exibe a tela de checkout
     public function checkout()
     {
-        $cart = session()->get('cart', []);
+        $cartKey = 'cart_' . Auth::id();
+        $cart = session()->get($cartKey, []);
 
         if (empty($cart)) {
-            return redirect()->route('products.index')->with('success', 'Seu carrinho está vazio!');
+            return redirect()->route('products.index')->with('error', 'Seu carrinho está vazio.');
         }
 
-        $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        $total = array_reduce($cart, function ($acc, $item) {
+            return $acc + ($item['price'] * $item['quantity']);
+        }, 0);
 
-        return view('cart.checkout', compact('cart', 'total'));
+        return view('checkout.index', compact('cart', 'total'));
     }
 
-    // Salva o Pedido no Banco de Dados
+    // Processa a criação do pedido
     public function store(Request $request)
     {
-        $request->validate([
-            'customer_name' => 'required|string|max:255',
-            'customer_phone' => 'required|string|max:20',
-            'customer_address' => 'required|string|max:255',
-            'customer_complement' => 'nullable|string|max:500',
-        ]);
+        $cartKey = 'cart_' . Auth::id();
+        $cart = session()->get($cartKey, []);
 
-        $cart = session()->get('cart', []);
         if (empty($cart)) {
-            return redirect()->route('products.index');
+            return redirect()->route('products.index')->with('error', 'Seu carrinho está vazio.');
         }
 
-        $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
-
-        $order = Order::create([
-            'customer_name' => $request->customer_name,
-            'customer_phone' => $request->customer_phone,
-            'customer_address' => $request->customer_address,
-            'customer_complement' => $request->customer_complement,
-            'total' => $total,
-            'status' => 'pendente',
+        $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string',
+            'payment_method' => 'required|string',
         ]);
 
-        foreach ($cart as $item) {
+        $total = array_reduce($cart, function ($acc, $item) {
+            return $acc + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        // Cria o pedido vinculado ao ID do cliente logado
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'customer_name' => $request->customer_name,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'payment_method' => $request->payment_method,
+            'total' => $total,
+            'status' => 'pending',
+        ]);
+
+        // Insere os itens do pedido
+        foreach ($cart as $productId => $item) {
             OrderItem::create([
                 'order_id' => $order->id,
-                'product_name' => $item['name'],
-                'price' => $item['price'],
+                'product_id' => $productId,
                 'quantity' => $item['quantity'],
+                'price' => $item['price'],
             ]);
         }
 
-        session()->forget('cart');
+        // Limpa o carrinho do cliente
+        session()->forget($cartKey);
 
-        // Redireciona para o cardápio acionando o Modal/Popup de Sucesso
-        return redirect()->route('products.index')
-            ->with('order_success', "Pedido #{$order->id} realizado com sucesso! Aguarde o preparo.");
+        return redirect()->route('products.index')->with('success', 'Pedido realizado com sucesso!');
     }
 
-    // Painel dos Funcionários (Exibe apenas pedidos ativos: pendente, em_preparo e pronto)
+    // Painel de Pedidos da Cozinha
     public function index()
     {
-        $orders = Order::with('items')
-            ->whereIn('status', ['pendente', 'em_preparo', 'pronto'])
-            ->orderBy('created_at', 'asc') // Exibe os mais antigos primeiro para a fila
-            ->get();
-
+        $orders = Order::with('items.product')->latest()->get();
         return view('orders.index', compact('orders'));
     }
 
-    // Atualização de Status pelo Funcionário
+    // Atualização de Status
     public function updateStatus(Request $request, Order $order)
     {
-        $request->validate([
-            'status' => 'required|in:pendente,em_preparo,pronto,entregue',
-        ]);
-
+        $request->validate(['status' => 'required|string']);
         $order->update(['status' => $request->status]);
 
-        return redirect()->back()->with('success', 'Status do pedido #' . $order->id . ' atualizado!');
+        return redirect()->back()->with('success', 'Status do pedido atualizado!');
     }
 }
