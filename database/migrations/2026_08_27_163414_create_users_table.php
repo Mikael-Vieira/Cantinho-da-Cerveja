@@ -14,14 +14,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-
-            // Dados fixos do usuário para entrega
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-
-            // Cargo (client, funcionario, admin)
-            $table->string('role')->default('client');
-
+            $table->string('role')->default('client'); // client, funcionario, admin
             $table->rememberToken();
             $table->timestamps();
         });
@@ -40,12 +35,26 @@ return new class extends Migration
             $table->text('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('cache', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->mediumText('value');
+            $table->bigInteger('expiration')->index();
+        });
+
+        Schema::create('cache_locks', function (Blueprint $table) {
+            $table->string('key')->primary();
+            $table->string('owner');
+            $table->bigInteger('expiration')->index();
+        });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('cache_locks');
+        Schema::dropIfExists('cache');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };
