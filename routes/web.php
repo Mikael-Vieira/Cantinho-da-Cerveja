@@ -46,5 +46,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     })->name('chefe.dashboard');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::post('/carrinho/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
+});
+
 // ROTAS DE AUTENTICAÇÃO DO BREEZE (Login, Registro, Logout, etc.)
 require __DIR__.'/auth.php';

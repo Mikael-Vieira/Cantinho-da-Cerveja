@@ -32,5 +32,17 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin', // <-- ADICIONADO AQUI (ou 'chefe', dependendo da sua preferência)
             ]
         );
+
+        //Criando usuario cliente para teste
+        User::updateOrCreate(
+            ['email' => 'cliente@gmail.com'],
+            [
+                'name' => 'Cliente Teste',
+                'password' => Hash::make('123'),
+                'role' => 'client',
+                'phone' => '(32) 99999-9999',
+                'address' => 'Rua Principal, 123',
+            ]
+        );
     }
 }

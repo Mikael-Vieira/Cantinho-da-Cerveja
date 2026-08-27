@@ -11,13 +11,13 @@
     <div class="cardapio-container">
         <div class="cardapio-wrapper">
 
-            @if(session('success'))
+            @if (session('success'))
                 <div class="alert-success" role="alert">
                     <span>{{ session('success') }}</span>
                 </div>
             @endif
 
-            @if(empty($cart))
+            @if (empty($cart))
                 <div class="cart-empty">
                     <p>Seu carrinho está vazio.</p>
                     <a href="{{ route('products.index') }}" class="btn-back">Ver Cardápio</a>
@@ -27,7 +27,7 @@
 
                     <!-- Lista de Itens -->
                     <div class="cart-items">
-                        @foreach($cart as $id => $item)
+                        @foreach ($cart as $id => $item)
                             <div class="cart-item">
 
                                 <div class="cart-item-info">
@@ -64,9 +64,12 @@
                             <span class="cart-summary-total">R$ {{ number_format($total, 2, ',', '.') }}</span>
                         </div>
 
-                        <a href="#" class="btn-checkout">
-                            Concluir Pedido
-                        </a>
+                        <form action="{{ route('cart.checkout') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn-checkout">
+                                Finalizar Pedido
+                            </button>
+                        </form>
 
                         <form action="{{ route('carrinho.clear') }}" method="POST">
                             @csrf

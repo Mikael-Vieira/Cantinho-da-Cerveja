@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -102,5 +105,48 @@ class CartController extends Controller
         CartItem::where('user_id', $userId)->delete();
 
         return redirect()->route('carrinho.index')->with('success', 'Carrinho esvaziado!');
+    }
+
+    public function checkout(Request $request)
+    {
+        $userId = Auth::id();
+        
+        $cartItems = CartItem::with('product')->where('user_id', $userId)->get();
+
+        if ($cartItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Seu carrinho está vazio.');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $total = $cartItems->sum(function ($item) {
+                return $item->product->price * $item->quantity;
+            });
+
+            $order = Order::create([
+                'user_id' => $userId,
+                'total' => $total,
+                'status' => 'pendente',
+            ]);
+
+            foreach ($cartItems as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->product->price,
+                ]);
+            }
+
+            CartItem::where('user_id', $userId)->delete();
+
+            DB::commit();
+
+            return redirect()->route('dashboard')->with('success', 'Pedido realizado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Erro ao finalizar o pedido. Tente novamente.');
+        }
     }
 }
