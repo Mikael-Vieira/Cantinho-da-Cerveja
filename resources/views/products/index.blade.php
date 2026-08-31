@@ -32,7 +32,7 @@
                                 @else
                                     <div class="product-image-placeholder">
                                         <span>Sem foto</span>
-                                    </div>
+                                      </div>
                                 @endif
 
                                 <div class="product-info">

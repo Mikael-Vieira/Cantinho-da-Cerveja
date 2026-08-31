@@ -1,8 +1,4 @@
-/* ==========================================================================
-   PÁGINA: CARDÁPIO DE PRODUTOS (MOBILE-FIRST)
-   ========================================================================== */
-
-/* Blocos de Categoria */
+    /* Blocos de Categoria */
 .category-block {
     margin-bottom: 2rem;
 }
@@ -230,6 +226,84 @@
 
 .btn-confirm:hover {
     background-color: var(--primary-hover);
+}
+
+
+/* ==========================================================================
+   Estilos do Formulário de Cadastro de Produtos
+   ========================================================================== */
+
+.form-wrapper {
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+textarea.form-control {
+    height: 100px;
+    resize: vertical;
+}
+
+.form-control-file {
+    background-color: #fafafa;
+    padding: 6px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+    text-align: center;
+    background-color: var(--primary, #3498db);
+    color: #161412;
+    font-weight: 700;
+}
+
+.btn-submit:hover {
+    background-color: var(--primary-hover, #2980b9);
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-error ul {
+    margin-left: 20px;
 }
 
 

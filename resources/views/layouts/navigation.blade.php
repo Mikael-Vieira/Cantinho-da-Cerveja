@@ -21,10 +21,19 @@
               Painel da Cozinha:
               Aparece apenas se o usuário for 'admin' ou 'funcionario'
             --}}
-            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'funcionario')
+            @if (Auth::user()->role === 'admin' || Auth::user()->role === 'funcionario')
                 <li>
                     <a href="{{ route('orders.index') }}">Painel da Cozinha</a>
                 </li>
+            @endif
+
+            <!-- Link visível apenas para o Admin / Chefe -->
+            @if (Auth::user()->role === 'admin')
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('products.create')" :active="request()->routeIs('products.create')">
+                        {{ __('Cadastrar Produto') }}
+                    </x-nav-link>
+                </div>
             @endif
 
             {{-- Informações e Ações do Usuário --}}

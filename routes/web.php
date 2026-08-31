@@ -22,6 +22,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/carrinho/adicionar/{product}', [CartController::class, 'add'])->name('carrinho.add');
     Route::post('/carrinho/remover/{product}', [CartController::class, 'remove'])->name('carrinho.remove');
     Route::post('/carrinho/limpar', [CartController::class, 'clear'])->name('carrinho.clear');
+    Route::post('/carrinho/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
 
     // Checkout e Criação de Pedido
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
@@ -39,15 +40,15 @@ Route::middleware(['auth', 'role:admin,funcionario'])->group(function () {
     Route::patch('/pedidos-cozinha/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 });
 
-// 4. ÁREA ESTRATÉGICA (EXCLUSIVO DO ADMIN / CHEFE)
+// 4. ÁREA ESTRATÉGICA E DE GESTÃO (EXCLUSIVO DO ADMIN / CHEFE)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return '<h1>Dashboard Financeira do Chefe</h1><p>Métricas de vendas, lucros e total de pedidos.</p>';
     })->name('chefe.dashboard');
-});
 
-Route::middleware(['auth'])->group(function () {
-    Route::post('/carrinho/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
+    // Cadastro de Produtos
+    Route::get('/produtos/criar', [ProductController::class, 'create'])->name('products.create');
+    Route::post('/produtos', [ProductController::class, 'store'])->name('products.store');
 });
 
 // ROTAS DE AUTENTICAÇÃO DO BREEZE (Login, Registro, Logout, etc.)

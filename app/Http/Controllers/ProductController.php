@@ -3,47 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
-     * Exibe a lista de produtos no cardápio.
+     * Exibe a listagem de produtos no cardápio público.
      */
     public function index()
     {
-        // Busca as categorias ativas e traz os produtos relacionados de cada uma
         $categories = Category::with('products')->get();
-
         return view('products.index', compact('categories'));
     }
 
     /**
-     * Mostra o formulário para criar um novo produto (se houver painel administrativo).
+     * Exibe o formulário de cadastro de produtos para o chefe/admin.
      */
     public function create()
     {
-        return view('products.create');
+        $categories = Category::all();
+        return view('products.create', compact('categories'));
     }
 
     /**
-     * Salva um novo produto no banco de dados.
+     * Armazena um novo produto no banco de dados.
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
+            'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        Product::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-        ]);
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $validatedData['image'] = $path;
+        }
 
-        return redirect()->route('products.index')->with('success', 'Produto cadastrado com sucesso!');
+        Product::create($validatedData);
+
+        return redirect()->route('products.create')->with('success', 'Produto cadastrado com sucesso!');
     }
 }
