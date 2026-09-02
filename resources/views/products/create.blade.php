@@ -87,8 +87,8 @@
             if (alert) {
                 alert.style.transition = 'opacity 0.5s ease';
                 alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 500); // Remove o elemento do HTML após o fade
+                setTimeout(() => alert.remove(), 500);
             }
-        }, 5000); // 5000 milissegundos = 5 segundos
+        }, 5000);
     </script>
 @endif
