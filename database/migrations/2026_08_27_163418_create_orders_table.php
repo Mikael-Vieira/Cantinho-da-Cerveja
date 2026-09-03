@@ -11,8 +11,12 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('customer_name');
+            $table->string('phone');
+            $table->string('address')->nullable();
+            $table->string('payment_method');
             $table->decimal('total', 10, 2);
-            $table->string('status')->default('pendente'); // pendente, preparando, entregue, etc.
+            $table->string('status')->default('pendente'); // pendente, em_preparo, pronto, entregue
             $table->timestamps();
         });
 

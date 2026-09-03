@@ -4,6 +4,12 @@
     </x-slot>
 
     <div style="padding: 1rem;">
+        @if (session('success'))
+            <div style="background: var(--bg-card); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                {{ session('success') }}
+            </div>
+        @endif
+
         @if($orders->isEmpty())
             <p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Nenhum pedido recebido até o momento.</p>
         @else
@@ -13,23 +19,21 @@
 
                         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.75rem; margin-bottom: 0.75rem;">
                             <strong style="font-size: 1.1rem;">Pedido #{{ $order->id }}</strong>
-                            <small style="color: var(--text-muted);">{{ $order->created_at->format('H:i') }}</small>
+                            <small style="color: var(--text-muted);">{{ $order->created_at->format('d/m H:i') }}</small>
                         </div>
 
                         <div style="font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.4;">
                             <p><strong>Cliente:</strong> {{ $order->customer_name }}</p>
-                            <p><strong>Tel:</strong> {{ $order->customer_phone }}</p>
-                            <p><strong>Local:</strong> {{ $order->customer_address }}</p>
-                            @if($order->customer_complement)
-                                <p style="color: var(--text-muted); font-style: italic;"><strong>Obs:</strong> {{ $order->customer_complement }}</p>
-                            @endif
+                            <p><strong>Tel:</strong> {{ $order->phone }}</p>
+                            <p><strong>Local/Endereço:</strong> {{ $order->address }}</p>
+                            <p><strong>Pagamento:</strong> {{ $order->payment_method }}</p>
                         </div>
 
                         <div style="border-top: 1px dashed var(--border-subtle); border-bottom: 1px dashed var(--border-subtle); padding: 0.75rem 0; margin-bottom: 1rem;">
                             <ul style="list-style: none; padding: 0; margin: 0;">
                                 @foreach($order->items as $item)
                                     <li style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
-                                        <span>{{ $item->quantity }}x {{ $item->product_name }}</span>
+                                        <span>{{ $item->quantity }}x {{ $item->product->name ?? 'Produto removido' }}</span>
                                         <strong>R$ {{ number_format($item->price * $item->quantity, 2, ',', '.') }}</strong>
                                     </li>
                                 @endforeach

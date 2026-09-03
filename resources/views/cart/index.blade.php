@@ -127,7 +127,7 @@
                     <div class="radio-row">
                         <label class="radio-option">
                             <input type="radio" name="tipo_pedido" value="local" id="tipo_local" checked>
-                            <span>Consumir no Local</span>
+                            <span>Retirar no Local</span>
                         </label>
                         <label class="radio-option">
                             <input type="radio" name="tipo_pedido" value="entrega" id="tipo_entrega">
@@ -148,6 +148,13 @@
                         <textarea name="customer_complement" id="customer_complement" rows="2"
                             placeholder="Ex: Perto da praça, portão azul...">{{ old('customer_complement') }}</textarea>
                     </div>
+                </div>
+
+                <!-- Se for Local: pedido é pra retirar no balcão, sem info extra -->
+                <div id="campos-local" class="conditional-fields">
+                    <p style="color: #a1a1aa; font-size: 0.85rem; margin: 0;">
+                        Seu pedido ficará pronto para retirada no local.
+                    </p>
                 </div>
 
                 <!-- Forma de Pagamento -->

@@ -31,7 +31,6 @@ class OrderController extends Controller
             'phone' => 'required|string|max:20',
             'tipo_pedido' => 'required|in:local,entrega',
             'address' => 'required_if:tipo_pedido,entrega|nullable|string',
-            'table_number' => 'required_if:tipo_pedido,local|nullable|string',
             'customer_complement' => 'nullable|string',
             'payment_method' => 'required|string',
         ]);
@@ -39,7 +38,7 @@ class OrderController extends Controller
         // Formata o local ou endereço para salvar na tabela
         $localOuEndereco = $request->tipo_pedido === 'entrega'
             ? $request->address . ($request->customer_complement ? ' (Ref: ' . $request->customer_complement . ')' : '')
-            : 'Mesa/Local: ' . $request->table_number;
+            : 'Retirada no Local';
 
         DB::beginTransaction();
 
@@ -56,7 +55,7 @@ class OrderController extends Controller
                 'address' => $localOuEndereco,
                 'payment_method' => $request->payment_method,
                 'total' => $total,
-                'status' => 'pending',
+                'status' => 'pendente',
             ]);
 
             // Insere os itens do pedido
@@ -91,7 +90,9 @@ class OrderController extends Controller
     // Atualização de Status
     public function updateStatus(Request $request, Order $order)
     {
-        $request->validate(['status' => 'required|string']);
+        $request->validate([
+            'status' => 'required|in:pendente,em_preparo,pronto,entregue',
+        ]);
         $order->update(['status' => $request->status]);
 
         return redirect()->back()->with('success', 'Status do pedido atualizado!');

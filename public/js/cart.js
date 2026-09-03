@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var camposEntrega = document.getElementById('campos-entrega');
     var camposLocal = document.getElementById('campos-local');
     var addressInput = document.getElementById('address');
-    var tableInput = document.getElementById('table_number');
 
     if (!overlay) return;
 
@@ -38,9 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Mantém o "required" alinhado com a validação do backend
         if (isEntrega) {
             addressInput.setAttribute('required', 'required');
-            tableInput.removeAttribute('required');
         } else {
-            tableInput.setAttribute('required', 'required');
             addressInput.removeAttribute('required');
         }
     }
