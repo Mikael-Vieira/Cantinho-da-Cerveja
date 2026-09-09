@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminDashboardController;
 
 // 1. ROTA PRINCIPAL / CARDÁPIO (Pública para navegação)
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
@@ -42,9 +43,7 @@ Route::middleware(['auth', 'role:admin,funcionario'])->group(function () {
 
 // 4. ÁREA ESTRATÉGICA E DE GESTÃO (EXCLUSIVO DO ADMIN / CHEFE)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return '<h1>Dashboard Financeira do Chefe</h1><p>Métricas de vendas, lucros e total de pedidos.</p>';
-    })->name('chefe.dashboard');
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('chefe.dashboard');
 
     // Cadastro de Produtos
     Route::get('/produtos/criar', [ProductController::class, 'create'])->name('products.create');

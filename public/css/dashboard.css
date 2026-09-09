@@ -1,0 +1,149 @@
+/* ==========================================================================
+   PÁGINA: DASHBOARD FINANCEIRO (CHEFE)
+   ========================================================================== */
+
+.dashboard-container {
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Cards de Resumo */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius, 8px);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+}
+
+.dashboard-card-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-card-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-main);
+}
+
+.dashboard-card-value.is-highlight {
+    color: var(--accent-green);
+}
+
+.dashboard-card-value-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: normal;
+}
+
+/* Gráficos */
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 800px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius, 8px);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+.dashboard-panel-title {
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+    color: var(--text-main);
+}
+
+/* Tabelas */
+.dashboard-table-wrapper {
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.dashboard-table thead tr {
+    border-bottom: 1px solid var(--border-subtle);
+    text-align: left;
+}
+
+.dashboard-table th {
+    padding: 0.5rem;
+    color: var(--text-main);
+}
+
+.dashboard-table tbody tr {
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.dashboard-table td {
+    padding: 0.5rem;
+    color: var(--text-main);
+}
+
+.dashboard-table td.is-highlight {
+    color: var(--accent-green);
+}
+
+.dashboard-table td.is-empty {
+    color: var(--text-muted);
+}
+
+.dashboard-status {
+    text-transform: capitalize;
+}
+
+/* Paginação */
+.dashboard-pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.dashboard-pagination a,
+.dashboard-pagination span {
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    font-size: 0.85rem;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.dashboard-pagination span.is-disabled {
+    color: var(--text-muted);
+}
+
+.dashboard-pagination span.is-current {
+    background: var(--accent-green);
+    color: white;
+    font-weight: bold;
+    border-color: var(--accent-green);
+}

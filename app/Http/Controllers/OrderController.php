@@ -81,9 +81,14 @@ class OrderController extends Controller
     }
 
     // Painel de Pedidos da Cozinha
+    // Mostra apenas pedidos que ainda não foram finalizados (entregues)
     public function index()
     {
-        $orders = Order::with(['user', 'items.product'])->latest()->get();
+        $orders = Order::with(['user', 'items.product'])
+            ->where('status', '!=', 'entregue')
+            ->latest()
+            ->get();
+
         return view('orders.index', compact('orders'));
     }
 

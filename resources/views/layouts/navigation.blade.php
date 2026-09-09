@@ -27,13 +27,18 @@
                 </li>
             @endif
 
-            <!-- Link visível apenas para o Admin / Chefe -->
+            {{-- Links visíveis apenas para o Admin / Chefe --}}
             @if (Auth::user()->role === 'admin')
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('products.create')" :active="request()->routeIs('products.create')">
-                        {{ __('Cadastrar Produto') }}
-                    </x-nav-link>
-                </div>
+                <li>
+                    <a href="{{ route('products.create') }}" class="{{ request()->routeIs('products.create') ? 'is-active' : '' }}">
+                        Cadastrar Produto
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('chefe.dashboard') }}" class="{{ request()->routeIs('chefe.dashboard') ? 'is-active' : '' }}">
+                        Dashboard Admin
+                    </a>
+                </li>
             @endif
 
             {{-- Informações e Ações do Usuário --}}
