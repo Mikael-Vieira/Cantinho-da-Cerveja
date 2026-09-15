@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\CategoryController;
 
 // 1. ROTA PRINCIPAL / CARDÁPIO (Pública para navegação)
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
@@ -23,10 +24,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/carrinho/adicionar/{product}', [CartController::class, 'add'])->name('carrinho.add');
     Route::post('/carrinho/remover/{product}', [CartController::class, 'remove'])->name('carrinho.remove');
     Route::post('/carrinho/limpar', [CartController::class, 'clear'])->name('carrinho.clear');
-    Route::post('/carrinho/finalizar', [CartController::class, 'checkout'])->name('cart.checkout');
 
-    // Checkout e Criação de Pedido
-    Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout.index');
+    // Criação de Pedido (finalizar via modal no carrinho)
     Route::post('/checkout', [OrderController::class, 'store'])->name('checkout.store');
 
     // Gerenciamento de Perfil
@@ -43,12 +42,24 @@ Route::middleware(['auth', 'role:admin,funcionario'])->group(function () {
 
 // 4. ÁREA ESTRATÉGICA E DE GESTÃO (EXCLUSIVO DO ADMIN / CHEFE)
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('chefe.dashboard');
 
     // Cadastro de Produtos
     Route::get('/produtos/criar', [ProductController::class, 'create'])->name('products.create');
     Route::post('/produtos', [ProductController::class, 'store'])->name('products.store');
+
+    // Cadastro de Categorias
+    Route::get('/categorias/criar', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categorias', [CategoryController::class, 'store'])->name('categories.store');
+
+    // Dashboard Financeiro
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('chefe.dashboard');
+    Route::get('/dashboard/exportar-csv', [AdminDashboardController::class, 'exportCsv'])->name('chefe.dashboard.export');
+
+    // Ações sobre pedidos no histórico do dashboard
+    Route::patch('/pedidos/{order}/cancelar', [AdminDashboardController::class, 'cancelar'])->name('chefe.pedidos.cancelar');
+    Route::patch('/pedidos/{order}/reabrir', [AdminDashboardController::class, 'reabrir'])->name('chefe.pedidos.reabrir');
+    Route::delete('/pedidos/{order}', [AdminDashboardController::class, 'destroy'])->name('chefe.pedidos.destroy');
 });
 
 // ROTAS DE AUTENTICAÇÃO DO BREEZE (Login, Registro, Logout, etc.)
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

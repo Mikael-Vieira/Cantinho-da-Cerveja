@@ -15,21 +15,47 @@
 </head>
 <body>
 
-    @include('layouts.navigation')
+    @php
+        $usaSidebar = Auth::check() && in_array(Auth::user()->role, ['admin', 'funcionario']);
+    @endphp
 
-    @isset($header)
-        <header>
-            {{ $header }}
-        </header>
-    @endisset
+    @if ($usaSidebar)
+        <div class="app-shell-with-sidebar">
+            @include('layouts.sidebar')
 
-    <main>
-        {{ $slot }}
-    </main>
+            <div class="app-content">
+                @isset($header)
+                    <header>
+                        {{ $header }}
+                    </header>
+                @endisset
 
-    <footer>
-        <p>&copy; {{ date('Y') }} Cantinho da Cerveja - Todos os direitos reservados.</p>
-    </footer>
+                <main>
+                    {{ $slot }}
+                </main>
+
+                <footer>
+                    <p>&copy; {{ date('Y') }} Cantinho da Cerveja - Todos os direitos reservados.</p>
+                </footer>
+            </div>
+        </div>
+    @else
+        @include('layouts.navigation')
+
+        @isset($header)
+            <header>
+                {{ $header }}
+            </header>
+        @endisset
+
+        <main>
+            {{ $slot }}
+        </main>
+
+        <footer>
+            <p>&copy; {{ date('Y') }} Cantinho da Cerveja - Todos os direitos reservados.</p>
+        </footer>
+    @endif
 
     {{-- Modal Pop-up de Sucesso do Pedido --}}
     @if (session('order_success'))

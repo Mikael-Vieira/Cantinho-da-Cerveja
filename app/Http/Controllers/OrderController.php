@@ -81,11 +81,12 @@ class OrderController extends Controller
     }
 
     // Painel de Pedidos da Cozinha
-    // Mostra apenas pedidos que ainda não foram finalizados (entregues)
+    // Mostra apenas pedidos que ainda estão em andamento
+    // (esconde os já finalizados: entregues ou cancelados)
     public function index()
     {
         $orders = Order::with(['user', 'items.product'])
-            ->where('status', '!=', 'entregue')
+            ->whereNotIn('status', ['entregue', 'cancelado'])
             ->latest()
             ->get();
 

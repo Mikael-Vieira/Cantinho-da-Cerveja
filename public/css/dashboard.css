@@ -117,6 +117,176 @@
     text-transform: capitalize;
 }
 
+.dashboard-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.dashboard-panel-header .dashboard-panel-title {
+    margin-bottom: 0;
+}
+
+.dashboard-export-btn {
+    background: var(--bg-main);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.dashboard-export-btn:hover {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+}
+
+/* Badges de status */
+.dashboard-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+}
+
+.dashboard-badge-entregue {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+}
+
+.dashboard-badge-cancelado {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+/* Menu de ações (3 pontinhos) */
+.dashboard-actions-cell {
+    text-align: right;
+    position: relative;
+}
+
+.dashboard-actions-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.dashboard-actions-menu summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    user-select: none;
+}
+
+.dashboard-actions-menu summary::-webkit-details-marker {
+    display: none;
+}
+
+.dashboard-actions-menu summary:hover {
+    background: var(--bg-main);
+    color: var(--text-main);
+}
+
+.dashboard-actions-menu-content {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 20;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 0.4rem;
+    min-width: 190px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.dashboard-actions-menu-content form button {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.dashboard-actions-menu-content form button:hover {
+    background: var(--bg-main);
+}
+
+.dashboard-actions-menu-content form button.is-danger {
+    color: #ef4444;
+}
+
+/* Formulário de Filtro */
+.dashboard-filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.dashboard-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 160px;
+}
+
+.dashboard-filter-field label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--text-muted);
+}
+
+.dashboard-filter-field input,
+.dashboard-filter-field select {
+    padding: 0.55rem 0.7rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.dashboard-filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.dashboard-filter-btn {
+    background-color: var(--accent-green);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.dashboard-filter-clear {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-decoration: underline;
+}
+
 /* Paginação */
 .dashboard-pagination {
     margin-top: 1rem;

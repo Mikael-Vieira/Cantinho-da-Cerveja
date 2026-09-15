@@ -80,7 +80,46 @@
 
         <!-- Tabela de Pedidos -->
         <div class="dashboard-panel">
-            <h3 class="dashboard-panel-title">Histórico de Pedidos</h3>
+            <div class="dashboard-panel-header">
+                <h3 class="dashboard-panel-title">Histórico de Pedidos</h3>
+                <a href="{{ route('chefe.dashboard.export', request()->query()) }}" class="dashboard-export-btn">
+                    ⬇ Exportar CSV
+                </a>
+            </div>
+
+            <form method="GET" action="{{ route('chefe.dashboard') }}" class="dashboard-filter-form">
+                <div class="dashboard-filter-field">
+                    <label for="filtro-cliente">Cliente</label>
+                    <input type="text" id="filtro-cliente" name="cliente" value="{{ request('cliente') }}" placeholder="Nome do cliente">
+                </div>
+
+                <div class="dashboard-filter-field">
+                    <label for="filtro-produto">Lanche</label>
+                    <input type="text" id="filtro-produto" name="produto" value="{{ request('produto') }}" placeholder="Nome do lanche">
+                </div>
+
+                <div class="dashboard-filter-field">
+                    <label for="filtro-data">Data</label>
+                    <input type="date" id="filtro-data" name="data" value="{{ request('data') }}">
+                </div>
+
+                <div class="dashboard-filter-field">
+                    <label for="filtro-status">Status</label>
+                    <select id="filtro-status" name="status">
+                        <option value="">Todos (entregues e cancelados)</option>
+                        <option value="entregue" {{ request('status') === 'entregue' ? 'selected' : '' }}>Entregue</option>
+                        <option value="cancelado" {{ request('status') === 'cancelado' ? 'selected' : '' }}>Cancelado</option>
+                    </select>
+                </div>
+
+                <div class="dashboard-filter-actions">
+                    <button type="submit" class="dashboard-filter-btn">Filtrar</button>
+                    @if (request('cliente') || request('produto') || request('data') || request('status'))
+                        <a href="{{ route('chefe.dashboard') }}" class="dashboard-filter-clear">Limpar filtros</a>
+                    @endif
+                </div>
+            </form>
+
             <div class="dashboard-table-wrapper">
                 <table class="dashboard-table">
                     <thead>
@@ -90,6 +129,7 @@
                             <th>Data</th>
                             <th>Valor</th>
                             <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -99,11 +139,41 @@
                                 <td>{{ $pedido->customer_name }}</td>
                                 <td>{{ $pedido->created_at->format('d/m/Y H:i') }}</td>
                                 <td class="is-highlight">R$ {{ number_format($pedido->total, 2, ',', '.') }}</td>
-                                <td class="dashboard-status">{{ str_replace('_', ' ', $pedido->status) }}</td>
+                                <td>
+                                    <span class="dashboard-badge dashboard-badge-{{ $pedido->status }}">
+                                        {{ str_replace('_', ' ', $pedido->status) }}
+                                    </span>
+                                </td>
+                                <td class="dashboard-actions-cell">
+                                    <details class="dashboard-actions-menu">
+                                        <summary>⋮</summary>
+                                        <div class="dashboard-actions-menu-content">
+                                            @if ($pedido->status !== 'cancelado')
+                                                <form action="{{ route('chefe.pedidos.cancelar', $pedido->id) }}" method="POST" onsubmit="return confirm('Marcar o pedido #{{ $pedido->id }} como cancelado?');">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit">Cancelar pedido</button>
+                                                </form>
+                                            @endif
+
+                                            <form action="{{ route('chefe.pedidos.reabrir', $pedido->id) }}" method="POST" onsubmit="return confirm('Enviar o pedido #{{ $pedido->id }} de volta para o preparo?');">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit">Voltar para preparo</button>
+                                            </form>
+
+                                            <form action="{{ route('chefe.pedidos.destroy', $pedido->id) }}" method="POST" onsubmit="return confirm('Excluir o pedido #{{ $pedido->id }} definitivamente? Essa ação não pode ser desfeita.');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="is-danger">Excluir do histórico</button>
+                                            </form>
+                                        </div>
+                                    </details>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="is-empty">Nenhum pedido registrado ainda.</td>
+                                <td colspan="6" class="is-empty">Nenhum pedido registrado ainda.</td>
                             </tr>
                         @endforelse
                     </tbody>
