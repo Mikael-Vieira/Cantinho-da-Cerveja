@@ -16,7 +16,7 @@
             </a>
 
             @if (Auth::user()->role === 'admin')
-                <details class="sidebar-group" {{ request()->routeIs('products.create') || request()->routeIs('categories.create') ? 'open' : '' }}>
+                <details class="sidebar-group" {{ request()->routeIs('products.create') || request()->routeIs('categories.create') || request()->routeIs('employees.create') ? 'open' : '' }}>
                     <summary>Cadastros</summary>
                     <div class="sidebar-group-links">
                         <a href="{{ route('products.create') }}" class="{{ request()->routeIs('products.create') ? 'is-active' : '' }}">
@@ -24,6 +24,9 @@
                         </a>
                         <a href="{{ route('categories.create') }}" class="{{ request()->routeIs('categories.create') ? 'is-active' : '' }}">
                             Cadastrar Categoria
+                        </a>
+                        <a href="{{ route('employees.create') }}" class="{{ request()->routeIs('employees.create') ? 'is-active' : '' }}">
+                            Cadastrar Funcionário
                         </a>
                     </div>
                 </details>

@@ -7,6 +7,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EmployeeController;
 
 // 1. ROTA PRINCIPAL / CARDÁPIO (Pública para navegação)
 Route::get('/', [ProductController::class, 'index'])->name('products.index');
@@ -59,6 +60,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::patch('/pedidos/{order}/cancelar', [AdminDashboardController::class, 'cancelar'])->name('chefe.pedidos.cancelar');
     Route::patch('/pedidos/{order}/reabrir', [AdminDashboardController::class, 'reabrir'])->name('chefe.pedidos.reabrir');
     Route::delete('/pedidos/{order}', [AdminDashboardController::class, 'destroy'])->name('chefe.pedidos.destroy');
+
+    //cadastro de funcionarios
+    Route::get('/funcionarios/criar', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::post('/funcionarios', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::delete('/funcionarios/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 });
 
 // ROTAS DE AUTENTICAÇÃO DO BREEZE (Login, Registro, Logout, etc.)
