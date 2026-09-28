@@ -57,10 +57,16 @@
     font-size: 1rem;
 }
 
+.employees-form-group input:focus {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 1px;
+    border-color: var(--focus-ring);
+}
+
 .employees-error {
     display: block;
     margin-top: 0.4rem;
-    color: #ef4444;
+    color: var(--danger);
     font-size: 0.8rem;
 }
 
@@ -73,6 +79,11 @@
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.employees-submit-btn:hover {
+    background-color: var(--accent-green-hover);
 }
 
 .employees-table-wrapper {
@@ -100,6 +111,10 @@
     border-bottom: 1px solid var(--border-subtle);
 }
 
+.employees-table tbody tr:hover {
+    background: var(--bg-main);
+}
+
 .employees-empty {
     color: var(--text-muted);
     text-align: center;
@@ -111,14 +126,15 @@
 
 .employees-remove-btn {
     background: transparent;
-    border: 1px solid #ef4444;
-    color: #ef4444;
+    border: 1px solid var(--danger);
+    color: var(--danger);
     padding: 0.35rem 0.75rem;
     border-radius: 6px;
     font-size: 0.8rem;
     cursor: pointer;
+    transition: background-color 0.15s ease;
 }
 
 .employees-remove-btn:hover {
-    background: rgba(239, 68, 68, 0.1);
+    background: color-mix(in srgb, var(--danger) 10%, transparent);
 }

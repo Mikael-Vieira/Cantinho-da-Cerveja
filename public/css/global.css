@@ -5,33 +5,125 @@
 
 /* 1. TEMA CLARO ACONCHEGANTE (Padrão) */
 :root {
+    color-scheme: light dark;
+
+    /* Superfícies */
     --bg-main: #F8F5F0;       /* Creme suave e acolhedor */
     --bg-card: #FFFFFF;       /* Cards brancos em destaque */
-    --bg-nav: #1E1B18;        /* Topo escuro elegante para a logo brilhar */
-    --primary: #C29247;       /* Dourado legível no fundo claro */
-    --primary-hover: #A87B35;
+    --bg-nav: #1E1B18;        /* Topo escuro elegante — fixo em qualquer tema */
+    --border-subtle: #E8E2D5;
+
+    /* Texto (conteúdo normal, sobre --bg-main / --bg-card) */
     --text-main: #2A2622;     /* Texto escuro/amadeirado */
     --text-muted: #706860;    /* Texto secundário */
-    --accent-green: #2E7D32;  /* Verde de preço */
-    --border-subtle: #E8E2D5;
+
+    /* Texto sobre a faixa escura (--bg-nav) — não muda com o tema,
+       porque o fundo dela também não muda */
+    --nav-text: #F4EFEA;
+    --nav-text-muted: #B0A8A0;
+
+    /* Marca / Ações primárias */
+    --primary: #C29247;       /* Dourado legível no fundo claro */
+    --primary-hover: #A87B35;
+    --primary-contrast: #1E1B18; /* texto sobre um fundo --primary */
+
+    /* Sucesso / Faturamento */
+    --accent-green: #2E7D32;
+    --accent-green-hover: #256628;
+
+    /* Erro / Perigo (cancelar, excluir, validação) */
+    --danger: #B3261E;
+    --danger-hover: #942019;
+
+    /* Aviso (pendências, alertas leves) */
+    --warning: #B45309;
+
+    /* Foco (acessibilidade — teclado). Azul é usado só aqui, em nenhum
+       outro lugar da interface, pra nunca ser confundido com outro estado */
+    --focus-ring: #2F6FED;
+
+    /* Estrutura */
     --radius: 12px;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.18); /* popups, toasts, modais */
 }
 
 /* 2. TEMA ESCURO ACONCHEGANTE (Ativa automaticamente no celular em Modo Escuro) */
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
         --bg-main: #1E1B18;       /* Carvão/Café escuro */
         --bg-card: #2A2622;       /* Amadeirado escuro */
-        --bg-nav: #161412;        /* Topo mais escuro */
-        --primary: #D4A359;       /* Dourado vibrante da logo */
-        --primary-hover: #C29247;
+        --bg-nav: #161412;        /* Topo ainda mais escuro, pra dar profundidade */
+        --border-subtle: #3D3731;
+
         --text-main: #F4EFEA;     /* Creme para leitura */
         --text-muted: #B0A8A0;    /* Cinza/creme suave */
+
+        --primary: #D4A359;       /* Dourado vibrante da logo */
+        --primary-hover: #C29247;
+        --primary-contrast: #1E1B18;
+
         --accent-green: #4CAF50;  /* Verde vibrante de preço */
-        --border-subtle: #3D3731;
+        --accent-green-hover: #43A047;
+
+        --danger: #E5534B;
+        --danger-hover: #F06B62;
+
+        --warning: #E0A63D;
+
+        --focus-ring: #5B8DEF;
+
         --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.55);
     }
+}
+
+/* 3. ALTERNÂNCIA MANUAL (opcional, pra quando/se vocês adicionarem um botão
+   de trocar tema). Usar via <html data-theme="dark"> ou data-theme="light" */
+:root[data-theme="dark"] {
+    --bg-main: #1E1B18;
+    --bg-card: #2A2622;
+    --bg-nav: #161412;
+    --border-subtle: #3D3731;
+    --text-main: #F4EFEA;
+    --text-muted: #B0A8A0;
+    --primary: #D4A359;
+    --primary-hover: #C29247;
+    --primary-contrast: #1E1B18;
+    --accent-green: #4CAF50;
+    --accent-green-hover: #43A047;
+    --danger: #E5534B;
+    --danger-hover: #F06B62;
+    --warning: #E0A63D;
+    --focus-ring: #5B8DEF;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+:root[data-theme="light"] {
+    --bg-main: #F8F5F0;
+    --bg-card: #FFFFFF;
+    --bg-nav: #1E1B18;
+    --border-subtle: #E8E2D5;
+    --text-main: #2A2622;
+    --text-muted: #706860;
+    --primary: #C29247;
+    --primary-hover: #A87B35;
+    --primary-contrast: #1E1B18;
+    --accent-green: #2E7D32;
+    --accent-green-hover: #256628;
+    --danger: #B3261E;
+    --danger-hover: #942019;
+    --warning: #B45309;
+    --focus-ring: #2F6FED;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.18);
+}
+
+/* Anel de foco visível pra navegação por teclado (WCAG 2.4.7) */
+:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
 }
 
 /* Reset Global & Acessibilidade Touch */
@@ -67,7 +159,7 @@ nav {
 }
 
 nav a {
-    color: #F4EFEA;
+    color: var(--nav-text);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
@@ -96,7 +188,7 @@ nav .nav-brand strong {
 
 /* Usuário Logado */
 nav ul .nav-user-info span {
-    color: #F4EFEA;
+    color: var(--nav-text);
     font-weight: 600;
     font-size: 0.9rem;
     background: rgba(255, 255, 255, 0.08);
@@ -112,7 +204,7 @@ nav ul .nav-user-info span {
 }
 
 .btn-logout {
-    background-color: #ef4444;
+    background-color: var(--danger);
     color: #ffffff;
     border: none;
     padding: 0.35rem 0.85rem;
@@ -124,7 +216,7 @@ nav ul .nav-user-info span {
 }
 
 .btn-logout:hover {
-    background-color: #dc2626;
+    background-color: var(--danger-hover);
 }
 
 .btn-logout:active {
@@ -134,7 +226,7 @@ nav ul .nav-user-info span {
 /* Botão de Entrar (Para Visitantes) */
 nav a.btn-login {
     background-color: var(--primary);
-    color: #1E1B18 !important;
+    color: var(--primary-contrast) !important;
     padding: 0.35rem 0.85rem;
     border-radius: 6px;
     font-weight: 600;
@@ -175,7 +267,7 @@ footer {
     border-top: 1px solid var(--border-subtle);
     text-align: center;
     padding: 1.25rem 1rem;
-    color: #B0A8A0;
+    color: var(--nav-text-muted);
     font-size: 0.8rem;
 }
 
@@ -190,7 +282,7 @@ footer {
     border: 1px solid var(--accent-green);
     padding: 0.85rem 1.25rem;
     border-radius: var(--radius);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-lg);
     display: flex;
     align-items: center;
     gap: 0.5rem;

@@ -16,7 +16,7 @@
             </a>
 
             @if (Auth::user()->role === 'admin')
-                <details class="sidebar-group" {{ request()->routeIs('products.create') || request()->routeIs('categories.create') || request()->routeIs('employees.create') ? 'open' : '' }}>
+                <details class="sidebar-group" name="sidebar-accordion" {{ request()->routeIs('products.create') || request()->routeIs('categories.create') || request()->routeIs('employees.create') ? 'open' : '' }}>
                     <summary>Cadastros</summary>
                     <div class="sidebar-group-links">
                         <a href="{{ route('products.create') }}" class="{{ request()->routeIs('products.create') ? 'is-active' : '' }}">
@@ -32,7 +32,7 @@
                 </details>
             @endif
 
-            <details class="sidebar-group" {{ request()->routeIs('products.index') || request()->routeIs('orders.index') ? 'open' : '' }}>
+            <details class="sidebar-group" name="sidebar-accordion" {{ request()->routeIs('products.index') || request()->routeIs('orders.index') ? 'open' : '' }}>
                 <summary>Produtos</summary>
                 <div class="sidebar-group-links">
                     <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'is-active' : '' }}">
@@ -45,7 +45,7 @@
             </details>
 
             @if (Auth::user()->role === 'admin')
-                <details class="sidebar-group" {{ request()->routeIs('chefe.dashboard') ? 'open' : '' }}>
+                <details class="sidebar-group" name="sidebar-accordion" {{ request()->routeIs('chefe.dashboard') ? 'open' : '' }}>
                     <summary>Histórico / Relatórios</summary>
                     <div class="sidebar-group-links">
                         <a href="{{ route('chefe.dashboard') }}" class="{{ request()->routeIs('chefe.dashboard') ? 'is-active' : '' }}">
@@ -67,3 +67,5 @@
         </form>
     </div>
 </aside>
+
+<script src="{{ asset('js/sidebar.js') }}"></script>
