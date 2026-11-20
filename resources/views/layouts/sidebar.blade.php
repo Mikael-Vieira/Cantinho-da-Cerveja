@@ -32,8 +32,8 @@
                 </details>
             @endif
 
-            <details class="sidebar-group" name="sidebar-accordion" {{ request()->routeIs('products.index') || request()->routeIs('orders.index') ? 'open' : '' }}>
-                <summary>Produtos</summary>
+        <details class="sidebar-group" name="sidebar-accordion">
+                    <summary>Produtos</summary>
                 <div class="sidebar-group-links">
                     <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'is-active' : '' }}">
                         Cardápio
@@ -45,7 +45,7 @@
             </details>
 
             @if (Auth::user()->role === 'admin')
-                <details class="sidebar-group" name="sidebar-accordion" {{ request()->routeIs('chefe.dashboard') ? 'open' : '' }}>
+                <details class="sidebar-group" name="sidebar-accordion">
                     <summary>Histórico / Relatórios</summary>
                     <div class="sidebar-group-links">
                         <a href="{{ route('chefe.dashboard') }}" class="{{ request()->routeIs('chefe.dashboard') ? 'is-active' : '' }}">
