@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 grupos.forEach(function (outro) {
 
                     if (outro !== grupo) {
-
+                        
                         outro.open = false;
 
                     }

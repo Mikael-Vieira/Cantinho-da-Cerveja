@@ -316,6 +316,82 @@ textarea.form-control {
     margin-left: 20px;
 }
 
+/* Container de ações do admin no canto superior direito (Editar -> Excluir) */
+.product-card {
+    position: relative !important;
+    z-index: 1;
+}
+
+.product-admin-actions {
+    position: absolute !important;
+    top: 0.6rem;
+    right: 0.6rem;
+    z-index: 2;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.product-delete-form {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    margin: 0 !important;
+}
+
+.btn-edit-product,
+.btn-delete-product {
+    border-radius: 6px;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.2;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+/* Botão Editar azul */
+.btn-edit-product {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: 1px solid #1d4ed8;
+}
+
+.btn-edit-product:hover {
+    background-color: #1d4ed8;
+    border-color: #1e40af;
+    transform: translateY(-1px);
+}
+
+.btn-edit-product:active {
+    transform: scale(0.96);
+}
+
+/* Botão Excluir */
+.btn-delete-product {
+    background-color: var(--bg-main);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.btn-delete-product:hover {
+    background-color: var(--danger);
+    color: var(--primary-contrast);
+    transform: translateY(-1px);
+}
+
+.btn-delete-product:active {
+    transform: scale(0.96);
+}
+
+@media (max-width: 479px) {
+    .product-title {
+        padding-right: 4rem;
+    }
+}
+
 
 /* ==========================================================================
    BREAKPOINTS DE TELA

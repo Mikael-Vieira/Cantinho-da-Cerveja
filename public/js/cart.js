@@ -74,4 +74,5 @@ document.addEventListener('DOMContentLoaded', function () {
         radioEntrega.addEventListener('change', atualizarCamposPorTipo);
         atualizarCamposPorTipo(); // estado inicial
     }
+
 });

@@ -47,6 +47,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     // Cadastro de Produtos
     Route::get('/produtos/criar', [ProductController::class, 'create'])->name('products.create');
     Route::post('/produtos', [ProductController::class, 'store'])->name('products.store');
+    Route::delete('/produtos/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::put('/produtos/{product}', [ProductController::class, 'update'])->name('products.update');   
 
     // Cadastro de Categorias
     Route::get('/categorias/criar', [CategoryController::class, 'create'])->name('categories.create');
